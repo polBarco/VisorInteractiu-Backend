@@ -1,29 +1,21 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from core.models import d50
+from core.models import CycloneEra5Node
 from pyproj import Transformer
 from geoalchemy2.shape import to_shape
 from shapely.ops import transform
 from shapely.geometry import mapping
 
-class d50Service:
+class CycloneEra5NodeService:
 
     @staticmethod
-    def get_d50_by_name(name: str, db: Session):
-        d50_list = db.query(d50).filter(d50.name == name).all()
-        if not d50_list:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="d50 not found")
+    def get_all_cyclone_era5_node(db: Session):
+        cyclone_era5_node_list = db.query(CycloneEra5Node).all()
+        if not cyclone_era5_node_list:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cyclone era5 node not found")
         else:
-            return convert_to_geojson_list(d50_list)
-
-    @staticmethod
-    def get_all_d50(db: Session):
-        d50_list = db.query(d50).all()
-        if not d50_list:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="d50 not found")
-        else:
-            return convert_to_geojson_list(d50_list)
-
+            return convert_to_geojson_list(cyclone_era5_node_list)
+        
 def round_coordinates(geometry, precision=5):
     """Función para redondear las coordenadas de una geometría."""
     def rounder(x, y, z=None):
@@ -31,15 +23,15 @@ def round_coordinates(geometry, precision=5):
     
     return transform(rounder, geometry)
 
-def convert_to_geojson_list(d50_list: list) -> dict:
+def convert_to_geojson_list(cyclone_era5_node_list: list) -> dict:
     # Configura el transformador UTM a WGS84
     transformer = Transformer.from_crs("EPSG:32736", "EPSG:4326", always_xy=True)
 
     features = []
 
-    for d50 in d50_list:
+    for cyclone_era5_node in cyclone_era5_node_list:
         # Convierte la geometría a un objeto Shapely
-        geom = to_shape(d50.geom)
+        geom = to_shape(cyclone_era5_node.geom)
 
         # Convierte las coordenadas de UTM a WGS84 después de simplificar
         wgs84_geom = transform(transformer.transform, geom)
@@ -48,7 +40,7 @@ def convert_to_geojson_list(d50_list: list) -> dict:
         # Agrega la geometría simplificada al array de features
         feature = {
             "properties": {
-                "d50": d50.d50,
+                "id": cyclone_era5_node.id,
             },
             "geometry": mapping(rounded_wgs84_geom)
         }
@@ -56,7 +48,7 @@ def convert_to_geojson_list(d50_list: list) -> dict:
 
     # Formatear todos los registros como una colección de características
     geojson = {
-        "type": "d50Collection",
+        "type": "CycloneEra5NodeCollection",
         "features": features
     }
     

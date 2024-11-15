@@ -25,3 +25,24 @@ class d50(Base):
 
     def __repr__(self):
         return f"<d50(gid={self.gid}, name={self.name})>"
+    
+class CycloneSedimentTransport(Base):
+    __tablename__ = 'cyclone_sediment_transport'
+    gid = Column(Integer, primary_key=True, index=True)
+    geom = Column(Geometry(geometry_type='MULTIPOINT', srid=4326))
+    id = Column("id", Integer)
+    transport = Column("transport", Float)
+    percent = Column("percent", Float)
+
+    def __repr__(self):
+        return f"<CycloneSedimentTransport(gid={self.gid})>"
+    
+class CycloneEra5Node(Base):
+    __tablename__ = 'cyclone_era5_node'
+    gid = Column(Integer, primary_key=True, index=True)
+    geom = Column(Geometry(geometry_type='MULTIPOINT', srid=4326))
+    id = Column("id", Integer)
+
+    def __repr__(self):
+        return f"<CycloneEra5Node(gid={self.gid})>"   
+    
