@@ -9,7 +9,6 @@ app = FastAPI()
 
 @router.get("/cartography", tags=["cartography"])
 async def get_cartography_by_element(element: str = Query(...), db: Session = Depends(get_db)):
-    print(f"Valor de element recibido: {element}")
     return CartographyService.get_cartography_by_element(element, db)
     
 
