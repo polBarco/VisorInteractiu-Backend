@@ -7,7 +7,7 @@ load_dotenv()
 
 database_url = os.getenv("DATABASE_URL")
 
-# Si no existe `DATABASE_URL`, significa que estás en desarrollo local y necesitas las variables separadas.
+# Si no existeix `database_url`, significa que estem desenvolupant en local necesitem les variables separades.
 if database_url is None:
     user = os.getenv("DB_USER")
     password = os.getenv("DB_PASSWORD")
@@ -33,17 +33,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-# user = os.getenv("DB_USER")
-# password = os.getenv("DB_PASSWORD")
-# host = os.getenv("DB_HOST")
-# port = os.getenv("DB_PORT")
-# database = os.getenv("DB_NAME")
-
-# if (user is None) or (password is None) or (host is None) or (port is None) or (database is None):
-#     print(f"user: {user}, password: {password}, host: {host}, port: {port}, database: {database}")
-
-#     raise Exception("Database credentials not found in .env file")
-
-# SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://"+user+":"+password+"@"+host+":"+port+"/"+database
