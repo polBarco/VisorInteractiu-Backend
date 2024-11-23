@@ -45,8 +45,6 @@ def convert_to_geojson_list(d50_list: list) -> dict:
         wgs84_geom = transform(transformer.transform, geom)
         rounded_wgs84_geom = round_coordinates(wgs84_geom, precision=6)
 
-        # simplified_geom = rounded_wgs84_geom.simplify(0.001, preserve_topology=True)
-
         # Agrega la geometría simplificada al array de features
         feature = {
             "properties": {
