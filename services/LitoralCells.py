@@ -35,7 +35,7 @@ def convert_to_geojson_list(litoral_cells_list: list) -> dict:
 
         # Convierte las coordenadas de UTM a WGS84 después de simplificar
         wgs84_geom = transform(transformer.transform, geom)
-        rounded_wgs84_geom = round_coordinates(wgs84_geom, precision=6)
+        # rounded_wgs84_geom = round_coordinates(wgs84_geom, precision=6)
 
         # simplified_geom = rounded_wgs84_geom.simplify(0.001, preserve_topology=True)
 
@@ -51,7 +51,7 @@ def convert_to_geojson_list(litoral_cells_list: list) -> dict:
                 "coord_xini": litoral_cells.coord_xini,
                 "par_impar": litoral_cells.par_impar
             },
-            "geometry": mapping(rounded_wgs84_geom)
+            "geometry": mapping(wgs84_geom)
         }
         features.append(feature)
 
