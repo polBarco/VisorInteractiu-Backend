@@ -14,3 +14,6 @@ app.add_middleware(
 
 app.include_router(Cartography.router)
 app.include_router(d50.router)
+app.include_router(LitoralCells.router)
+app.include_router(CycloneSedimentTransport.router)
+app.include_router(CycloneEra5Node.router)
