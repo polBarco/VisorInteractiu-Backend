@@ -48,6 +48,7 @@ def convert_to_geojson_list(d50_list: list) -> dict:
         # Agrega la geometría simplificada al array de features
         feature = {
             "properties": {
+                "name": d50.name,
                 "d50": d50.d50,
             },
             "geometry": mapping(rounded_wgs84_geom)

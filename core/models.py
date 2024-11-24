@@ -26,6 +26,22 @@ class d50(Base):
     def __repr__(self):
         return f"<d50(gid={self.gid}, name={self.name})>"
     
+class LitoralCells(Base):
+    __tablename__ = 'litoral_cells'
+    gid = Column(Integer, primary_key=True, index=True)
+    geom = Column(Geometry(geometry_type='MULTILINESTRING', srid=4326))
+    length = Column("length", Float)
+    name = Column("name", Text)
+    length_km = Column("length_km", Float)
+    coord_xfin = Column("coord_xfin", Float)
+    coord_yfin = Column("coord_yfin", Float)
+    coord_yini = Column("coord_yini", Float)
+    coord_xini = Column("coord_xini", Float)
+    par_impar = Column("par/impar", Text)
+
+    def __repr__(self):
+        return f"<LitoralCells(gid={self.gid}, element={self.element})>"
+    
 class CycloneSedimentTransport(Base):
     __tablename__ = 'cyclone_sediment_transport'
     gid = Column(Integer, primary_key=True, index=True)

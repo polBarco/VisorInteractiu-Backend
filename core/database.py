@@ -5,18 +5,23 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 load_dotenv()
 
-user = os.getenv("DB_USER")
-password = os.getenv("DB_PASSWORD")
-host = os.getenv("DB_HOST")
-port = os.getenv("DB_PORT")
-database = os.getenv("DB_NAME")
+database_url = os.getenv("DATABASE_URL")
 
-if (user is None) or (password is None) or (host is None) or (port is None) or (database is None):
-    print(f"user: {user}, password: {password}, host: {host}, port: {port}, database: {database}")
+# Si no existeix `database_url`, significa que estem desenvolupant en local necesitem les variables separades.
+if database_url is None:
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    database = os.getenv("DB_NAME")
 
-    raise Exception("Database credentials not found in .env file")
+    if (user is None) or (password is None) or (host is None) or (port is None) or (database is None):
+        print(f"user: {user}, password: {password}, host: {host}, port: {port}, database: {database}")
+        raise Exception("Database credentials not found in .env file")
 
-SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://"+user+":"+password+"@"+host+":"+port+"/"+database
+    database_url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
+
+SQLALCHEMY_DATABASE_URL = database_url
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
