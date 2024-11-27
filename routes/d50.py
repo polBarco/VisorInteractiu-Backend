@@ -10,7 +10,3 @@ app = FastAPI()
 @router.get("/d50", tags=["d50"])
 async def get_d50_by_name(name: str = Query(...), db: Session = Depends(get_db)):
     return d50Service.get_d50_by_name(name, db)
-
-@router.get("/d50/all", tags=["d50"])
-async def get_all_d50(db: Session = Depends(get_db)):
-    return d50Service.get_all_d50(db)
