@@ -2,10 +2,6 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from core.models import LitoralCells
 from utils.GeoJSONConverter import GeoJSONConverter
-# from pyproj import Transformer
-# from geoalchemy2.shape import to_shape
-# from shapely.ops import transform
-# from shapely.geometry import mapping
 
 class LitoralCellsService:
 
@@ -29,41 +25,3 @@ class LitoralCellsService:
                     "par_impar": l.par_impar
                 }
             )
-        
-
-# def convert_to_geojson_list(litoral_cells_list: list) -> dict:
-#     # Configura el transformador UTM a WGS84
-#     transformer = Transformer.from_crs("EPSG:32736", "EPSG:4326", always_xy=True)
-
-#     features = []
-
-#     for litoral_cells in litoral_cells_list:
-#         # Convierte la geometría a un objeto Shapely
-#         geom = to_shape(litoral_cells.geom)
-
-#         # Convierte las coordenadas de UTM a WGS84 después de simplificar
-#         wgs84_geom = transform(transformer.transform, geom)    
-
-#         # Agrega la geometría simplificada al array de features
-#         feature = {
-#             "properties": {
-#                 "name": litoral_cells.name,
-#                 "length": litoral_cells.length,
-#                 "length_km": litoral_cells.length_km,
-#                 "coord_xfin": litoral_cells.coord_xfin,
-#                 "coord_yfin": litoral_cells.coord_yfin,
-#                 "coord_yini": litoral_cells.coord_yini,
-#                 "coord_xini": litoral_cells.coord_xini,
-#                 "par_impar": litoral_cells.par_impar
-#             },
-#             "geometry": mapping(wgs84_geom)
-#         }
-#         features.append(feature)
-
-#     # Formatear todos los registros como una colección de características
-#     geojson = {
-#         "type": "LitoralCellsCollection",
-#         "features": features
-#     }
-    
-#     return geojson

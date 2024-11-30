@@ -7,7 +7,7 @@ load_dotenv()
 
 database_url = os.getenv("DATABASE_URL")
 
-# Si no existeix `database_url`, significa que estem desenvolupant en local necesitem les variables separades.
+# Si no existeix `database_url`, significa que estem desenvolupant en local i necesitem les variables separades.
 if database_url is None:
     user = os.getenv("DB_USER")
     password = os.getenv("DB_PASSWORD")

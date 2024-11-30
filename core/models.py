@@ -18,7 +18,6 @@ class Cartography(Base):
 class d50(Base):
     __tablename__ = 'd50'
     gid = Column(Integer, primary_key=True, index=True)
-    # id = Column("id", Integer)
     geom = Column(Geometry(geometry_type='MULTIPOINT', srid=4326))
     name = Column("name", Text)
     d50 = Column("d50", Float)
@@ -72,3 +71,13 @@ class Rivers(Base):
     def __repr__(self):
         return f"<Rivers(gid={self.gid})>"  
     
+class Hurricane(Base):
+    __tablename__ = 'hurricane_track'
+    gid = Column(Integer, primary_key=True, index=True)
+    geom = Column(Geometry(geometry_type='MULTILINESTRING', srid=4326))
+    name = Column("name", Text)
+    year = Column("year", Integer)
+    type = Column("type", Text)
+
+    def __repr__(self):
+        return f"<Hurricane(gid={self.gid})>"
