@@ -81,3 +81,15 @@ class Hurricane(Base):
 
     def __repr__(self):
         return f"<Hurricane(gid={self.gid})>"
+    
+class RiversMozambique(Base):
+    __tablename__ = 'rivers_mozambique'
+
+    gid = Column(Integer, primary_key=True, index=True)
+    geom = Column(Geometry(geometry_type='MULTILINESTRING', srid=4326))
+    arcid = Column("arcid", Integer)
+    up_cells = Column("up_cells", Integer)
+    region = Column("region", Text)
+
+    def __repr__(self):
+        return f"<RiversMozambique(gid={self.gid})>"  
