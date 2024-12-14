@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import Cartography, d50, LitoralCells, CycloneSedimentTransport, CycloneEra5Node, Rivers, Hurricane
+from routes import Cartography, d50, LitoralCells, CycloneSedimentTransport, CycloneEra5Node, Rivers, RiversMozambique , Hurricane
 
 app = FastAPI()
 
@@ -18,4 +18,5 @@ app.include_router(LitoralCells.router)
 app.include_router(CycloneSedimentTransport.router)
 app.include_router(CycloneEra5Node.router)
 app.include_router(Rivers.router)
+app.include_router(RiversMozambique.router)
 app.include_router(Hurricane.router)
