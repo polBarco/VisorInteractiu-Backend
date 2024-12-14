@@ -11,7 +11,7 @@ class RiversMozambiqueService:
         if not rivers_list:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Rivers not found")
         else:
-            return GeoJSONConverter.convert_to_geojson_list(
+            return GeoJSONConverter.convert_rivers_to_geojson_list(
                 rivers_list,
                 "RiversMozambiqueCollection",
                 lambda r: {
