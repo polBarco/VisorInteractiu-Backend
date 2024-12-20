@@ -7,6 +7,8 @@ from core.database import SessionLocal
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.sql import text
 
+# Tests unitarios
+
 def test_database_url_from_env(monkeypatch):
     # Simulate the DATABASE_URL environment variable
     monkeypatch.setenv(
@@ -71,6 +73,24 @@ def test_prefer_database_url_over_local_vars(monkeypatch):
     from core.database import SQLALCHEMY_DATABASE_URL
     assert SQLALCHEMY_DATABASE_URL == "postgresql+psycopg2://test_user:test_pass@localhost:5432/test_db"
 
+def test_unsupported_database_engine(monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", "mysql+pymysql://user:pass@localhost/db")
+
+    import importlib
+    from core import database
+
+    try:
+        importlib.reload(database)
+        pytest.fail("An error was expected when using an unsupported engine, but none occurred")
+    except ModuleNotFoundError as e:
+        # Verificar que el error menciona el módulo pymysql
+        assert "pymysql" in str(e), "The error does not mention the pymysql module"
+    except Exception as e:
+        pytest.fail(f"ModuleNotFoundError was expected, but occurred: {type(e).__name__} - {str(e)}")
+
+
+# Tests d'integracion
+
 def test_database_connection(monkeypatch):
     monkeypatch.setenv("DATABASE_URL", "postgresql+psycopg2://visor_hyuy_user:cICSWGpG2Vx8gbavwUXXSfvd98HRwt9I@dpg-csud4qalqhvc73cla1j0-a.oregon-postgres.render.com/visor_hyuy")
 
@@ -108,19 +128,4 @@ def test_multiple_sessions():
     finally:
         session1.close()
         session2.close()
-
-def test_unsupported_database_engine(monkeypatch):
-    monkeypatch.setenv("DATABASE_URL", "mysql+pymysql://user:pass@localhost/db")
-
-    import importlib
-    from core import database
-
-    try:
-        importlib.reload(database)
-        pytest.fail("An error was expected when using an unsupported engine, but none occurred")
-    except ModuleNotFoundError as e:
-        # Verificar que el error menciona el módulo pymysql
-        assert "pymysql" in str(e), "The error does not mention the pymysql module"
-    except Exception as e:
-        pytest.fail(f"ModuleNotFoundError was expected, but occurred: {type(e).__name__} - {str(e)}")
 
