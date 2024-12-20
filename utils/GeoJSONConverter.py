@@ -27,3 +27,24 @@ class GeoJSONConverter:
             "type": collection_type,
             "features": features
         }
+
+    @staticmethod
+    def convert_rivers_to_geojson_list(objects_list: list, collection_type: str, properties_func, simplify_tolerance: float = None) -> dict:
+        features = []
+
+        for obj in objects_list:
+            geom = to_shape(obj.geom)
+
+            if simplify_tolerance is not None:
+                geom = geom.simplify(simplify_tolerance, preserve_topology=True)
+
+            feature = {
+                "properties": properties_func(obj),
+                "geometry": mapping(geom)
+            }
+            features.append(feature)
+
+        return {
+            "type": collection_type,
+            "features": features
+        }
