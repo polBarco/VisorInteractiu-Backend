@@ -60,16 +60,6 @@ class CycloneEra5Node(Base):
 
     def __repr__(self):
         return f"<CycloneEra5Node(gid={self.gid})>" 
-
-class Rivers(Base):
-    __tablename__ = 'af_riv_15s'
-    gid = Column(Integer, primary_key=True, index=True)
-    geom = Column(Geometry(geometry_type='MULTILINESTRING', srid=4326))
-    arcid = Column("arcid", Integer)
-    up_cells = Column("up_cells", Integer)
-
-    def __repr__(self):
-        return f"<Rivers(gid={self.gid})>"  
     
 class Hurricane(Base):
     __tablename__ = 'hurricane_track'
