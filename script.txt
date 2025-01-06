@@ -1,0 +1,20 @@
+CREATE TABLE rivers_mozambique AS
+SELECT r.*
+FROM af_riv_15s AS r
+JOIN mozgeojson AS m
+ON ST_Intersects(r.geom, m.geom);
+
+ALTER TABLE rivers_mozambique ADD COLUMN region VARCHAR(10);
+
+update rivers_mozambique 
+set region = case 
+	when st_ymax(geom) <= -21.5 then 'South'
+	when st_ymax(geom) <= -16 and st_ymin(geom) > -21.5 and st_xmax(geom) <= 35.5 then 'West' 
+	when st_ymax(geom) <= -16 and st_ymin(geom) > -21.5 and st_xmax(geom) > 35.5 then 'East' 
+	when st_ymin(geom) > -17 then 'North'
+	else 'South'
+end;
+
+SELECT region, COUNT(*) 
+FROM rivers_mozambique 
+GROUP BY region;
